@@ -1,0 +1,40 @@
+* Flow Table
+
+
+   * api_name
+   * api_method
+   * api_base_url
+   * api_endpoint
+   * api_auth_token
+   * api_headers
+   * api_params
+   * api_body
+   * api_status_code
+
+   *** Flow Table SQL query
+
+    CREATE TABLE flow (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        api_name VARCHAR(50) NOT NULL,
+        api_description VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+   );
+
+   CREATE TABLE flow_apis (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        flow_id INT NOT NULL,
+        api_method VARCHAR(10) NOT NULL,
+        api_base_url VARCHAR(255) NOT NULL,
+        api_endpoint VARCHAR(255) NOT NULL,
+        api_auth_token VARCHAR(255),
+        api_headers JSON,
+        api_params JSON,
+        api_body JSON,
+        api_status_code INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (flow_id)
+          REFERENCES flow(id)
+          ON DELETE CASCADE
+   );
