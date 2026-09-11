@@ -2,9 +2,9 @@ import pool from "../config/database";
 import { User } from "../types/user.types";
 
 export const createUser = async (data: User, hashedPassword: string) => {
-  const query = `INSERT INTO users (username, email, password, full_name) VALUES (?, ?, ?, ?);`;
+  const query = `INSERT INTO users (company_name, email, password, full_name) VALUES (?, ?, ?, ?);`;
   const [createUser] = await pool.execute(query, [
-    data.username,
+    data.company_name,
     data.email,
     hashedPassword,
     data.full_name,
@@ -23,7 +23,7 @@ export const getUserByEmail = async (email: string) => {
 export const getUserByID = async (id: any) => {
   const query = `SELECT 
                   id,
-                  username,
+                  company_name,
                   email,
                   full_name,
                   created_at
@@ -38,7 +38,7 @@ export const getUserByID = async (id: any) => {
 export const getAllUsers = async () => {
   const query = `SELECT 
                   id, 
-                  username,
+                  company_name,
                   email,
                   full_name,
                   created_at
@@ -50,10 +50,10 @@ export const getAllUsers = async () => {
 };
 
 export const updateUser = async (id: number, data: User) => {
-  const query = `UPDATE users SET username = ?, email= ?, password = ?, full_name = ? WHERE id = ?;`;
+  const query = `UPDATE users SET company_name = ?, email= ?, password = ?, full_name = ? WHERE id = ?;`;
   const [updatedUsers] = await pool.execute(query, [
     id,
-    data.username,
+    data.company_name,
     data.email,
     data.password,
     data.full_name,
