@@ -11,21 +11,17 @@ import { findUser, validateUser } from "../validation/user.valiadation";
 import { generateToken } from "../utils/jwt.utils";
 
 export const registerUserService = async (data: User, password: string) => {
-  const users = await findUser(data.email, data.username);
+  const users = await findUser(data.email, data.company_name);
 
   const emailExists = users.find((user) => user.email === data.email);
 
   if (emailExists) {
-    throw new Error("Email already exists");
+    const error: any = new Error("Email already exists");
+    error.statusCode = 400;
+    throw error;
   }
 
-  const usernameExists = users.find((user) => user.username === data.username);
-
-  if (usernameExists) {
-    throw new Error("Username already exists");
-  }
-
-  await createUser(data, password);
+  return await createUser(data, password);
 };
 
 export const getUserByIdService = async (id: number) => {
@@ -76,11 +72,11 @@ export const isUserAuthorizedToLogin = async (
   try {
     isValidPassword = await bcrypt.compare(password, user.password);
   } catch (error) {
-    throw new Error("Invalid email fdfor password");
+    throw new Error("Invalid email or password");
   }
 
   if (!isValidPassword) {
-    throw new Error("Invalid fgfemail or password");
+    throw new Error("Invalid email or password");
   }
 
   const token = generateToken({
