@@ -1,12 +1,20 @@
 import express, { NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/user.routes";
 import flowRoutes from './routes/flow.routes';
+import cors from "cors";
 
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
