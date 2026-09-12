@@ -8,6 +8,19 @@ import {
   registerUserService,
 } from "../services/user.service";
 import { responseStatus } from "../utils/status";
+import { AuthRequest } from "../middleware/auth.middleware";
+
+export const verifyToken = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    return responseStatus(res, 200, "Token is valid", req.user);
+  } catch (error: any) {
+    next(error);
+  }
+};
 
 export const registerUser = async (
   req: Request,
