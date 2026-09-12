@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { getJwtSecret } from "../utils/jwt.utils";
 import { User } from "../types/user.types";
+import { responseStatus } from "../utils/status";
 
 export interface AuthRequest extends Request {
   user?: User;
@@ -18,18 +19,16 @@ export const authenticateToken = (
     : null;
 
   if (!token) {
-    return res.status(401).json({ message: "Authorization token required" });
+    return responseStatus(res, 401, "Authorization token required");
   }
   try {
     const decode = jwt.verify(token, getJwtSecret()) as User;
     if (!decode.id || !decode.email) {
-      return res.status(401).json({ message: "Invalid Token" });
+      return responseStatus(res, 403, "Invalid or expired token");
     }
     req.user = decode as User;
     next();
   } catch (error) {
-    return res.status(401).json({
-      message: "Invalid or expired token",
-    });
+    return responseStatus(res, 403, "Invalid or expired token");
   }
 };
