@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { getFlowController } from "../controllers/flow.controller";
+import { createFlowController, getFlowController } from "../controllers/flow.controller";
+import { authenticateToken } from "../middleware/auth.middleware";
 
 const route = Router();
 
-route.get('/flow', getFlowController)
+route.post('/flow', authenticateToken, createFlowController)
+route.get('/flow/:id', authenticateToken, getFlowController)
+// route.get('/flows', authenticateToken, getFlowsController)
 
 export default route;

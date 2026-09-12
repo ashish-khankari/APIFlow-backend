@@ -16,5 +16,12 @@ export const validateUser = async (id: number) => {
     WHERE id = ?`,
     [id],
   );
-  return rows;
+
+  const isUserRegistered = rows;
+  if (
+    !isUserRegistered ||
+    (Array.isArray(isUserRegistered) && isUserRegistered.length === 0)
+  ) {
+    throw new Error("User does not exist");
+  }
 };

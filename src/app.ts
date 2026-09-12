@@ -4,6 +4,7 @@ import flowRoutes from './routes/flow.routes';
 import cors from "cors";
 
 import dotenv from "dotenv";
+import { responseStatus } from "./utils/status";
 
 dotenv.config();
 
@@ -21,9 +22,9 @@ app.use(express.json());
 app.use("/", userRoutes);
 app.use("/", flowRoutes);
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, res: Response) => {
   const status = err.statusCode || 500;
-  res.status(status).json({ message: err.message || "Internal server error" });
+  responseStatus(res, status, err.message || "Internal server error")
 });
 
 export default app;

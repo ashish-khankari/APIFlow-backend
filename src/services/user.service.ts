@@ -25,15 +25,7 @@ export const registerUserService = async (data: User, password: string) => {
 };
 
 export const getUserByIdService = async (id: number) => {
-  const isUserRegistered = await validateUser(id);
-
-  if (
-    !isUserRegistered ||
-    (Array.isArray(isUserRegistered) && isUserRegistered.length === 0)
-  ) {
-    throw new Error("User does not exist");
-  }
-
+  await validateUser(id);
   return await getUserByID(id);
 };
 
@@ -42,14 +34,7 @@ export const getAllUsersService = () => {
 };
 
 export const deleteUserByID = async (id: number) => {
-  const isUserRegistered = await validateUser(id);
-
-  if (
-    !isUserRegistered ||
-    (Array.isArray(isUserRegistered) && isUserRegistered.length === 0)
-  ) {
-    throw new Error("User does not exist");
-  }
+  await validateUser(id);
   return await deleteUser(id);
 };
 
