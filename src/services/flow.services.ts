@@ -1,5 +1,5 @@
 import { flowInterface } from "../controllers/flow.controller"
-import { createFlow } from "../repository/flow.repository";
+import { createFlow, getAllFlow } from "../repository/flow.repository";
 
 export const createFlowService = async (data: flowInterface) => {
     if (!data?.flow_name || !data?.flow_description) {
@@ -9,4 +9,9 @@ export const createFlowService = async (data: flowInterface) => {
     };
 
     await createFlow(data);
+}
+
+export const getAllFlowService = async (id: number) => {
+    const allFlowData = await getAllFlow(id);
+    return allFlowData;
 }

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { responseStatus } from "../utils/status";
-import { createFlowService } from "../services/flow.services";
+import { createFlowService, getAllFlowService } from "../services/flow.services";
 import { AuthRequest } from "../middleware/auth.middleware";
 
 export interface flowInterface {
@@ -21,6 +21,13 @@ export const createFlowController = async (req: AuthRequest, res: Response, next
     }
 }
 
-export const getFlowController = (req: Request, res: Response) => {
-    return responseStatus(res, 200, "Flow controller is working");
+export const getAllFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const get_user_id = req.user?.id as number;
+
+    try {
+        const flows = await getAllFlowService(get_user_id);
+        return responseStatus(res, 200, "Fetched flows correctly", flows);
+    } catch (error) {
+        next(error);
+    }
 }

@@ -11,3 +11,9 @@ export const createFlow = async (data: flowInterface) => {
 
     return rows;
 }
+
+export const getAllFlow = async (id: number) => {
+    const query = `SELECT * FROM flow WHERE user_id = ?`;
+    const [rows] = await pool.execute(query, [id]);
+    return rows;
+}
