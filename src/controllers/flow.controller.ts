@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { responseStatus } from "../utils/status";
-import { createFlowService, deleteFlowService, fetchSingleFlowService, getAllFlowService } from "../services/flow.services";
+import { createFlowService, deleteFlowService, fetchSingleFlowService, getAllFlowService, updateFlowService } from "../services/flow.services";
 import { AuthRequest } from "../middleware/auth.middleware";
 
 export interface flowInterface {
@@ -49,6 +49,26 @@ export const deleteFlowController = async (req: AuthRequest, res: Response, next
         const id = req.params?.id as string;
         await deleteFlowService(user_id, id);
         return responseStatus(res, 200, "Deleted flow successfully")
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const updateFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const { flow_name, flow_description } = req.body;
+    if (!flow_name && !flow_description) {
+        throw new Error("Please provide at least one field to update.");
+    }
+
+    if (!req.params?.id) {
+        throw new Error("Please provide flow id");
+    }
+    try {
+        const user_id = req.user?.id as number;
+        const id = req.params?.id as string;
+        const data: flowInterface = req.body;
+        const updatedFlow = await updateFlowService(data, user_id, id);
+        return responseStatus(res, 200, "Updated flow successfully", updatedFlow);
     } catch (error) {
         next(error);
     }

@@ -1,5 +1,5 @@
 import { flowInterface } from "../controllers/flow.controller"
-import { createFlow, deleteFlow, fetchSingleFlow, getAllFlow } from "../repository/flow.repository";
+import { createFlow, deleteFlow, fetchSingleFlow, getAllFlow, updateFlow } from "../repository/flow.repository";
 
 export const createFlowService = async (data: flowInterface) => {
     if (!data?.flow_name || !data?.flow_description) {
@@ -29,4 +29,9 @@ export const fetchSingleFlowService = async (user_id: number, id: string) => {
         throw error;
     }
     return singleFlowData;
+}
+
+export const updateFlowService = async (data: flowInterface, user_id: number, id: string) => {
+    await fetchSingleFlowService(user_id, id);
+    await updateFlow(data, user_id, id);
 }
