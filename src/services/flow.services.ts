@@ -33,5 +33,5 @@ export const fetchSingleFlowService = async (user_id: number, id: string) => {
 
 export const updateFlowService = async (data: flowInterface, user_id: number, id: string) => {
     await fetchSingleFlowService(user_id, id);
-    await updateFlow(data, user_id, id);
+    return await updateFlow(data, id);
 }
