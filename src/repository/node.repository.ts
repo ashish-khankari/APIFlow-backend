@@ -42,3 +42,10 @@ export const getNodeFlow = async (id: number, flowId: number) => {
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
 }
+
+export const deleteNodeFlow = async (id: number, flowId: number) => {
+    const query = `
+    DELETE FROM node_flow WHERE id = ? AND flow_id = ?;`;
+    const [rows] = await pool.execute(query, [id, flowId]);
+    return rows;
+}

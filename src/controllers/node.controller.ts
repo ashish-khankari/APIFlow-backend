@@ -60,3 +60,14 @@ export const getNodeFlowController = async (req: AuthRequest, res: Response, nex
         next(error);
     }
 }
+
+export const deleteNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params?.id);
+        const flowId = Number(req.params?.flowId);
+        const node = await deleteNodeFlowService(id, flowId);
+        return responseStatus(res, 200, "Node deleted successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
