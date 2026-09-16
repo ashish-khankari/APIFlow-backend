@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { responseStatus } from "../utils/status";
-import { createNodeService, getNodeFlowService } from "../services/node.services";
+import { createNodeService, deleteNodeFlowService, getAllNodeFlowService, getNodeFlowService } from "../services/node.services";
 
 type nodeMethods =
     "GET" |
@@ -39,9 +39,20 @@ export const createNodeController = async (req: AuthRequest, res: Response, next
     }
 }
 
-export const getNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getAllNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.user?.id);
+        const flowId = Number(req.params?.flowId);
+        const node = await getAllNodeFlowService(id, flowId);
+        return responseStatus(res, 200, "Node fetched successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params?.id);
         const flowId = Number(req.params?.flowId);
         const node = await getNodeFlowService(id, flowId);
         return responseStatus(res, 200, "Node fetched successfully", node);

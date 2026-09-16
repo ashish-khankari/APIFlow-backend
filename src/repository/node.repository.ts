@@ -29,6 +29,13 @@ export const createNode = async (data: NodeFlowInterface) => {
     return rows;
 }
 
+export const getAllNodeFlow = async (id: number, flowId: number) => {
+    const query = `
+    SELECT * FROM node_flow WHERE id = ? AND flow_id = ?;`;
+    const [rows] = await pool.execute(query, [id, flowId]);
+    return rows;
+}
+
 export const getNodeFlow = async (id: number, flowId: number) => {
     const query = `
     SELECT * FROM node_flow WHERE id = ? AND flow_id = ?;`;

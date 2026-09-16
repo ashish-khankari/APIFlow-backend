@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createNodeController, getNodeFlowController } from "../controllers/node.controller";
+import { createNodeController, deleteNodeFlowController, getAllNodeFlowController, getNodeFlowController } from "../controllers/node.controller";
 import { authenticateToken } from "../middleware/auth.middleware";
 
 const route = Router();
