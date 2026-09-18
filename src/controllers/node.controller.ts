@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { responseStatus } from "../utils/status";
-import { createNodeService, deleteNodeFlowService, getAllNodeFlowService, getNodeFlowService } from "../services/node.services";
+import { createNodeService, createNodeSliceService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService } from "../services/node.services";
 
 type nodeMethods =
     "GET" |
@@ -23,6 +23,40 @@ export interface NodeFlowInterface {
     request_body: Record<string, unknown>,
     flow_id: number,
     user_id: number,
+}
+
+export interface CreateNodeSlicesInterface {
+    id: number,
+    node_title: string,
+    node_description: string,
+    flow_id: number,
+    user_id: number,
+    node_order: number,
+}
+
+export const createNodeSlicesController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const data: CreateNodeSlicesInterface = req.body;
+        if (!data.flow_id || !data.node_title) {
+            return responseStatus(res, 404, "Invalid data");
+        }
+        data.user_id = req.user?.id as number;
+        const createdNode = await createNodeSliceService(data);
+        return responseStatus(res, 200, "Node created successfully", createdNode);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getAllNodeSliceController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.user?.id);
+        const flowId = Number(req.params?.flowId);
+        const node = await getAllNodeSliceService(id, flowId);
+        return responseStatus(res, 200, "Node fetched successfully", node);
+    } catch (error) {
+        next(error);
+    }
 }
 
 export const createNodeController = async (req: AuthRequest, res: Response, next: NextFunction) => {
