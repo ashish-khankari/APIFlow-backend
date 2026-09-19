@@ -55,3 +55,15 @@ export const deleteNodeById = async (id: number, flowId: number, node_order: num
     const [rows] = await pool.execute(query, [id, flowId, node_order]);
     return rows;
 }
+
+export const updateNodeById = async (id: number, flowId: number, data: CreateNodeSlicesInterface) => {
+    const query =
+        `UPDATE node SET 
+            node_title=COALESCE(?, node_title),
+            node_description=COALESCE(?, node_description)
+        WHERE id = ?
+            AND
+        flow_id=?;`;
+    const [rows] = await pool.execute(query, [data.node_title, data.node_description, id, flowId]);
+    return rows;
+}

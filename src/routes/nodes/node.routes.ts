@@ -7,7 +7,8 @@ import {
     getAllNodeApiController,
     getAllNodeController,
     getNodeApiController,
-    getNodeController
+    getNodeController,
+    updateNodeByIdController
 } from "../../controllers/node.controller";
 import { authenticateToken } from "../../middleware/auth.middleware";
 
@@ -17,6 +18,7 @@ route.post('/node', authenticateToken, createNodeController);
 route.get('/node/:flowId', authenticateToken, getAllNodeController);
 route.get('/node/:flowId/:id', authenticateToken, getNodeController);
 route.delete('/node/:flowId/:id', authenticateToken, deleteNodeByIdController);
+route.patch('/node/:flowId/:id', authenticateToken, updateNodeByIdController);
 
 route.post('/node-api', authenticateToken, createNodeApiController);
 route.get('/node-api/:flowId', authenticateToken, getAllNodeApiController);

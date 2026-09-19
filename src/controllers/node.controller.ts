@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { responseStatus } from "../utils/status";
-import { createNodeService, createNodeSliceService, deleteNodeByIdService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService, getNodeService } from "../services/nodes/node.services";
+import { createNodeService, createNodeSliceService, deleteNodeByIdService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService, getNodeService, updateNodeByIdService } from "../services/nodes/node.services";
 
 type nodeMethods =
     "GET" |
@@ -86,6 +86,22 @@ export const deleteNodeByIdController = async (req: AuthRequest, res: Response, 
         const node_order = Number(req.params?.node_order);
         const node = await deleteNodeByIdService(id, flowId, node_order);
         return responseStatus(res, 200, "Node deleted successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const updateNodeByIdController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params?.id);
+        const flowId = Number(req.params?.flowId);
+        const data: CreateNodeSlicesInterface = req.body;
+        if (!data.node_title) {
+            return responseStatus(res, 404, "Invalid data");
+        }
+        data.user_id = req.user?.id as number;
+        const updatedNode = await updateNodeByIdService(id, flowId, data);
+        return responseStatus(res, 200, "Node updated successfully", updatedNode);
     } catch (error) {
         next(error);
     }
