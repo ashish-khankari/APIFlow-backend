@@ -48,3 +48,10 @@ export const getNode = async (ids: NodeIdsInterface) => {
     const [rows] = await pool.execute<RowDataPacket[]>(query, [ids?.userId ?? null, ids?.flowId ?? null, ids?.id ?? null]);
     return rows?.[0];
 }
+
+export const deleteNodeById = async (id: number, flowId: number, node_order: number) => {
+    const query = `
+    DELETE FROM node WHERE id = ? AND flow_id = ? AND node_order = ?;`;
+    const [rows] = await pool.execute(query, [id, flowId, node_order]);
+    return rows;
+}

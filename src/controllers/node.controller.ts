@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { responseStatus } from "../utils/status";
-import { createNodeService, createNodeSliceService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService, getNodeService } from "../services/nodes/node.services";
+import { createNodeService, createNodeSliceService, deleteNodeByIdService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService, getNodeService } from "../services/nodes/node.services";
 
 type nodeMethods =
     "GET" |
@@ -74,6 +74,18 @@ export const getNodeController = async (req: AuthRequest, res: Response, next: N
         }
         const node = await getNodeService(ids);
         return responseStatus(res, 200, "Node fetched successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const deleteNodeByIdController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params?.id);
+        const flowId = Number(req.params?.flowId);
+        const node_order = Number(req.params?.node_order);
+        const node = await deleteNodeByIdService(id, flowId, node_order);
+        return responseStatus(res, 200, "Node deleted successfully", node);
     } catch (error) {
         next(error);
     }
