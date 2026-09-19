@@ -34,7 +34,7 @@ export interface CreateNodeSlicesInterface {
     node_order: number,
 }
 
-export const createNodeSlicesController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const createNodeController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const data: CreateNodeSlicesInterface = req.body;
         if (!data.flow_id || !data.node_title) {
@@ -48,7 +48,7 @@ export const createNodeSlicesController = async (req: AuthRequest, res: Response
     }
 }
 
-export const getAllNodeSliceController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getAllNodeController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.user?.id);
         const flowId = Number(req.params?.flowId);
@@ -59,7 +59,7 @@ export const getAllNodeSliceController = async (req: AuthRequest, res: Response,
     }
 }
 
-export const createNodeController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const createNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const data: NodeFlowInterface = req.body;
         if (!data.flow_id || !data.node_title) {
@@ -73,7 +73,7 @@ export const createNodeController = async (req: AuthRequest, res: Response, next
     }
 }
 
-export const getAllNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getAllNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.user?.id);
         const flowId = Number(req.params?.flowId);
@@ -84,7 +84,7 @@ export const getAllNodeFlowController = async (req: AuthRequest, res: Response, 
     }
 }
 
-export const getNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params?.id);
         const flowId = Number(req.params?.flowId);
@@ -95,7 +95,7 @@ export const getNodeFlowController = async (req: AuthRequest, res: Response, nex
     }
 }
 
-export const deleteNodeFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const deleteNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params?.id);
         const flowId = Number(req.params?.flowId);

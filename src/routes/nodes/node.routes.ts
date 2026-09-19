@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { createNodeController, createNodeSlicesController, deleteNodeFlowController, getAllNodeFlowController, getAllNodeSliceController, getNodeFlowController } from "../../controllers/node.controller";
+import { createNodeApiController, createNodeController, deleteNodeApiController, getAllNodeApiController, getAllNodeController, getNodeApiController } from "../../controllers/node.controller";
 import { authenticateToken } from "../../middleware/auth.middleware";
 
 const route = Router();
 
-route.post('/node-slice', authenticateToken, createNodeSlicesController);
-route.get('/node-slice/:flowId', authenticateToken, getAllNodeSliceController);
-
 route.post('/node', authenticateToken, createNodeController);
-route.get('/node/:flowId', authenticateToken, getAllNodeFlowController);
-route.get('/node/:flowId/:id', authenticateToken, getNodeFlowController);
-route.delete('/node/:flowId/:id', authenticateToken, deleteNodeFlowController);
+route.get('/node/:flowId', authenticateToken, getAllNodeController);
+
+route.post('/node-api', authenticateToken, createNodeApiController);
+route.get('/node-api/:flowId', authenticateToken, getAllNodeApiController);
+route.get('/node-api/:flowId/:id', authenticateToken, getNodeApiController);
+route.delete('/node-api/:flowId/:id', authenticateToken, deleteNodeApiController);
 
 export default route;
