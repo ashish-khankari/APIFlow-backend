@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/user.routes";
 import flowRoutes from './routes/flow.routes';
-import nodeRoute from './routes/node.routes'
+import nodeRoute from './routes/nodes/node.routes'
 import cors from "cors";
 
 import dotenv from "dotenv";

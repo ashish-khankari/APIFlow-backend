@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { responseStatus } from "../utils/status";
-import { createNodeService, createNodeSliceService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService } from "../services/node.services";
+import { createNodeService, createNodeSliceService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService } from "../services/nodes/node.services";
 
 type nodeMethods =
     "GET" |

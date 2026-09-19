@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createNodeController, createNodeSlicesController, deleteNodeFlowController, getAllNodeFlowController, getAllNodeSliceController, getNodeFlowController } from "../controllers/node.controller";
-import { authenticateToken } from "../middleware/auth.middleware";
+import { createNodeController, createNodeSlicesController, deleteNodeFlowController, getAllNodeFlowController, getAllNodeSliceController, getNodeFlowController } from "../../controllers/node.controller";
+import { authenticateToken } from "../../middleware/auth.middleware";
 
 const route = Router();
 
