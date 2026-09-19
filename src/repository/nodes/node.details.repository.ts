@@ -3,7 +3,7 @@ import { NodeFlowInterface } from "../../controllers/node.controller";
 
 export const createNode = async (data: NodeFlowInterface) => {
     const query = `
-    INSERT INTO node_flow (
+    INSERT INTO node_api (
         node_title,
         node_description,
         node_method,
@@ -33,21 +33,21 @@ export const createNode = async (data: NodeFlowInterface) => {
 
 export const getAllNodeFlow = async (id: number, flowId: number) => {
     const query = `
-    SELECT * FROM node_flow WHERE id = ? AND flow_id = ? ORDER BY id ASC;`;
+    SELECT * FROM node_api WHERE id = ? AND flow_id = ? ORDER BY id ASC;`;
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
 }
 
 export const getNodeFlow = async (id: number, flowId: number) => {
     const query = `
-    SELECT * FROM node_flow WHERE id = ? AND flow_id = ?;`;
+    SELECT * FROM node_api WHERE id = ? AND flow_id = ?;`;
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
 }
 
 export const deleteNodeFlow = async (id: number, flowId: number) => {
     const query = `
-    DELETE FROM node_flow WHERE id = ? AND flow_id = ?;`;
+    DELETE FROM node_api WHERE id = ? AND flow_id = ?;`;
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
 }
