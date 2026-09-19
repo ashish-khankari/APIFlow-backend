@@ -1,6 +1,6 @@
-import { CreateNodeSlicesInterface, NodeFlowInterface } from "../../controllers/node.controller"
+import { CreateNodeSlicesInterface, NodeFlowInterface, NodeIdsInterface } from "../../controllers/node.controller"
 import { createNode, deleteNodeFlow, getAllNodeFlow, getNodeFlow } from "../../repository/nodes/node.details.repository";
-import { createNodesSlice, getAllNodeSlice } from "../../repository/nodes/node.repository";
+import { createNodesSlice, getAllNodeSlice, getNode } from "../../repository/nodes/node.repository";
 
 export const createNodeSliceService = async (data: CreateNodeSlicesInterface) => {
     return await createNodesSlice(data);
@@ -8,6 +8,10 @@ export const createNodeSliceService = async (data: CreateNodeSlicesInterface) =>
 
 export const getAllNodeSliceService = async (id: number, flowId: number) => {
     return await getAllNodeSlice(id, flowId);
+}
+
+export const getNodeService = async (ids: NodeIdsInterface) => {
+    return await getNode(ids);
 }
 
 export const createNodeService = async (data: NodeFlowInterface) => {

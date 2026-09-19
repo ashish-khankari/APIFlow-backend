@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { responseStatus } from "../utils/status";
-import { createNodeService, createNodeSliceService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService } from "../services/nodes/node.services";
+import { createNodeService, createNodeSliceService, deleteNodeFlowService, getAllNodeFlowService, getAllNodeSliceService, getNodeFlowService, getNodeService } from "../services/nodes/node.services";
 
 type nodeMethods =
     "GET" |
@@ -34,6 +34,12 @@ export interface CreateNodeSlicesInterface {
     node_order: number,
 }
 
+export interface NodeIdsInterface {
+    id?: number,
+    flowId?: number,
+    userId?: number,
+}
+
 export const createNodeController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const data: CreateNodeSlicesInterface = req.body;
@@ -53,6 +59,20 @@ export const getAllNodeController = async (req: AuthRequest, res: Response, next
         const id = Number(req.user?.id);
         const flowId = Number(req.params?.flowId);
         const node = await getAllNodeSliceService(id, flowId);
+        return responseStatus(res, 200, "Node fetched successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getNodeController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const ids: NodeIdsInterface = {
+            id: Number(req.params?.id),
+            flowId: Number(req.params?.flowId),
+            userId: Number(req.user?.id),
+        }
+        const node = await getNodeService(ids);
         return responseStatus(res, 200, "Node fetched successfully", node);
     } catch (error) {
         next(error);

@@ -1,5 +1,6 @@
+import { RowDataPacket } from "mysql2/promise";
 import pool from "../../config/database";
-import { CreateNodeSlicesInterface } from "../../controllers/node.controller";
+import { CreateNodeSlicesInterface, NodeIdsInterface } from "../../controllers/node.controller";
 
 export const createNodesSlice = async (data: CreateNodeSlicesInterface) => {
     const getMax = `SELECT max(node_order) from node WHERE user_id = ? AND flow_id = ?;`
@@ -39,4 +40,11 @@ export const getAllNodeSlice = async (id: number, flowId: number) => {
     SELECT * FROM node WHERE user_id = ? AND flow_id = ? ORDER BY node_order ASC;`;
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
+}
+
+export const getNode = async (ids: NodeIdsInterface) => {
+    const query = `
+    SELECT * FROM node WHERE user_id = ? AND flow_id = ? AND id = ?;`;
+    const [rows] = await pool.execute<RowDataPacket[]>(query, [ids?.userId ?? null, ids?.flowId ?? null, ids?.id ?? null]);
+    return rows?.[0];
 }
