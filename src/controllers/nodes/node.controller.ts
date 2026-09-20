@@ -1,9 +1,9 @@
 import { Response, NextFunction } from "express"
 import { AuthRequest } from "../../middleware/auth.middleware"
 import { responseStatus } from "../../utils/status";
-import { createNodeSliceService, deleteNodeByIdService, getAllNodeSliceService, getNodeService, updateNodeByIdService } from "../../services/nodes/node.services";
+import { createNodeService, deleteNodeByIdService, getAllNodeService, getNodeService, updateNodeByIdService } from "../../services/nodes/node.services";
 
-export interface CreateNodeSlicesInterface {
+export interface CreateNodeInterface {
     id?: number,
     node_title: string,
     node_description?: string,
@@ -31,14 +31,14 @@ export const createNodeController = async (req: AuthRequest, res: Response, next
             return responseStatus(res, 400, "node_title is required and cannot be empty");
         }
 
-        const data: CreateNodeSlicesInterface = {
+        const data: CreateNodeInterface = {
             flow_id: parsedFlowId,
             node_title: node_title.trim(),
             node_description: typeof node_description === "string" ? node_description.trim() : undefined,
             user_id: Number(req.user?.id),
         };
 
-        const createdNode = await createNodeSliceService(data);
+        const createdNode = await createNodeService(data);
         return responseStatus(res, 201, "Node created successfully", createdNode);
     } catch (error) {
         next(error);
@@ -54,7 +54,7 @@ export const getAllNodeController = async (req: AuthRequest, res: Response, next
             return responseStatus(res, 400, "A valid flowId parameter is required");
         }
 
-        const node = await getAllNodeSliceService(id, flowId);
+        const node = await getAllNodeService(id, flowId);
         return responseStatus(res, 200, "Node fetched successfully", node);
     } catch (error) {
         next(error);
@@ -118,7 +118,7 @@ export const updateNodeByIdController = async (req: AuthRequest, res: Response, 
             return responseStatus(res, 400, "node_title cannot be empty");
         }
 
-        const data: Partial<CreateNodeSlicesInterface> = {};
+        const data: Partial<CreateNodeInterface> = {};
         if (node_title !== undefined) {
             data.node_title = node_title.trim();
         }

@@ -1,8 +1,8 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import pool from "../../config/database";
-import { CreateNodeSlicesInterface, NodeIdsInterface } from "../../controllers/nodes/node.controller";
+import { CreateNodeInterface, NodeIdsInterface } from "../../controllers/nodes/node.controller";
 
-export const createNodesSlice = async (data: CreateNodeSlicesInterface) => {
+export const createNode = async (data: CreateNodeInterface) => {
     // 1. Verify flow exists and belongs to the authenticated user
     const checkFlowQuery = `SELECT id FROM flow WHERE id = ? AND user_id = ?;`;
     const [flowRows]: any = await pool.execute(checkFlowQuery, [data.flow_id, data.user_id]);
@@ -46,7 +46,7 @@ export const createNodesSlice = async (data: CreateNodeSlicesInterface) => {
     };
 }
 
-export const getAllNodeSlice = async (userId: number, flowId: number) => {
+export const getAllNodes = async (userId: number, flowId: number) => {
     const query = `
     SELECT * FROM node WHERE user_id = ? AND flow_id = ? ORDER BY node_order ASC;`;
     const [rows] = await pool.execute(query, [userId, flowId]);
@@ -91,7 +91,7 @@ export const updateNodeById = async (
     id: number,
     flowId: number,
     userId: number,
-    data: Partial<CreateNodeSlicesInterface>
+    data: Partial<CreateNodeInterface>
 ) => {
     const query = `
         UPDATE node SET 
