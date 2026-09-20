@@ -33,23 +33,17 @@ export const createNodeApi = async (data: NodeFlowInterface) => {
     return rows;
 }
 
-export const getAllNodeApi = async (user_id: number, flowId: number) => {
+
+export const getNodeApi = async (nodeId: number, userId: number) => {
     const query = `
-    SELECT * FROM node_api WHERE user_id = ? AND flow_id = ? ORDER BY id ASC;`;
-    const [rows] = await pool.execute(query, [user_id, flowId]);
+    SELECT * FROM node_api WHERE node_id = ? AND user_id = ?;`;
+    const [rows] = await pool.execute(query, [nodeId, userId]);
     return rows;
 }
 
-export const getNodeApi = async (id: number, user_id: number, flowId: number) => {
+export const deleteNodeApi = async (nodeId: number, userId: number) => {
     const query = `
-    SELECT * FROM node_api WHERE id = ? AND user_id = ? AND flow_id = ?;`;
-    const [rows] = await pool.execute(query, [id, user_id, flowId]);
-    return rows;
-}
-
-export const deleteNodeApi = async (id: number, flowId: number) => {
-    const query = `
-    DELETE FROM node_api WHERE id = ? AND flow_id = ?;`;
-    const [rows] = await pool.execute(query, [id, flowId]);
+    DELETE FROM node_api WHERE node_id = ? AND user_id = ?;`;
+    const [rows] = await pool.execute(query, [nodeId, userId]);
     return rows;
 }
