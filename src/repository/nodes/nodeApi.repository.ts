@@ -28,23 +28,22 @@ export const createNodeApi = async (data: NodeFlowInterface) => {
         data.node_api_headers ? JSON.stringify(data.node_api_headers) : null,
         data.node_api_request_body ? JSON.stringify(data.node_api_request_body) : null,
         data.node_api_query ? JSON.stringify(data.node_api_query) : null,
-        data.flow_id,
-        data.user_id,
+        data.node_api_params ? JSON.stringify(data.node_api_params) : null,
     ]);
     return rows;
 }
 
-export const getAllNodeApi = async (id: number, flowId: number) => {
+export const getAllNodeApi = async (user_id: number, flowId: number) => {
     const query = `
-    SELECT * FROM node_api WHERE id = ? AND flow_id = ? ORDER BY id ASC;`;
-    const [rows] = await pool.execute(query, [id, flowId]);
+    SELECT * FROM node_api WHERE user_id = ? AND flow_id = ? ORDER BY id ASC;`;
+    const [rows] = await pool.execute(query, [user_id, flowId]);
     return rows;
 }
 
-export const getNodeApi = async (id: number, flowId: number) => {
+export const getNodeApi = async (id: number, user_id: number, flowId: number) => {
     const query = `
-    SELECT * FROM node_api WHERE id = ? AND flow_id = ?;`;
-    const [rows] = await pool.execute(query, [id, flowId]);
+    SELECT * FROM node_api WHERE id = ? AND user_id = ? AND flow_id = ?;`;
+    const [rows] = await pool.execute(query, [id, user_id, flowId]);
     return rows;
 }
 

@@ -54,7 +54,7 @@ export const getNodeApiController = async (req: AuthRequest, res: Response, next
     try {
         const id = Number(req.params?.id);
         const flowId = Number(req.params?.flowId);
-        const node = await getNodeApiService(id, flowId);
+        const node = await getNodeApiService(id, req.user?.id as number, flowId);
         return responseStatus(res, 200, "Node fetched successfully", node);
     } catch (error) {
         next(error);
