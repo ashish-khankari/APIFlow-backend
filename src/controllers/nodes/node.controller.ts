@@ -3,28 +3,6 @@ import { AuthRequest } from "../../middleware/auth.middleware"
 import { responseStatus } from "../../utils/status";
 import { createNodeSliceService, deleteNodeByIdService, getAllNodeSliceService, getNodeService, updateNodeByIdService } from "../../services/nodes/node.services";
 
-type nodeMethods =
-    "GET" |
-    "POST" |
-    "PUT" |
-    "DELETE" |
-    "PATCH"
-
-
-export interface NodeFlowInterface {
-    id: number,
-    node_title: string,
-    node_description: string,
-    node_method: nodeMethods,
-    node_base_url: string,
-    node_end_point: string,
-    node_token: string,
-    headers: Record<string, unknown>,
-    request_body: Record<string, unknown>,
-    flow_id: number,
-    user_id: number,
-}
-
 export interface CreateNodeSlicesInterface {
     id?: number,
     node_title: string,

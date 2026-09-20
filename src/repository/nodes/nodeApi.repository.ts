@@ -1,26 +1,33 @@
 import pool from "../../config/database";
-import { NodeFlowInterface } from "../../controllers/nodes/node.controller";
+import { NodeFlowInterface } from "../../controllers/nodes/nodeApi.controller";
 
 export const createNodeApi = async (data: NodeFlowInterface) => {
     const query = `
     INSERT INTO node_api (
-        node_method,
-        node_base_url,
-        node_end_point,
-        node_token,
-        headers,
-        request_body,
+        node_id,
         flow_id,
-        user_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+        user_id,
+        node_api_method,
+        node_api_base_url,
+        node_api_endpoint,
+        node_api_token,
+        node_api_headers,
+        node_api_request_body,
+        node_api_query,
+        node_api_params
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
     const [rows] = await pool.execute(query, [
-        data.node_method,
-        data.node_base_url,
-        data.node_end_point ?? null,
-        data.node_token ?? null,
-        data.headers ? JSON.stringify(data.headers) : null,
-        data.request_body ? JSON.stringify(data.request_body) : null,
+        data.node_id,
+        data.flow_id,
+        data.user_id,
+        data.node_api_method,
+        data.node_api_base_url,
+        data.node_api_endpoint ?? null,
+        data.node_api_token ?? null,
+        data.node_api_headers ? JSON.stringify(data.node_api_headers) : null,
+        data.node_api_request_body ? JSON.stringify(data.node_api_request_body) : null,
+        data.node_api_query ? JSON.stringify(data.node_api_query) : null,
         data.flow_id,
         data.user_id,
     ]);
