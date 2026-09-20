@@ -1,5 +1,5 @@
 import { NodeFlowInterface } from "../../controllers/nodes/nodeApi.controller";
-import { createNodeApi, deleteNodeApi, getNodeApi } from "../../repository/nodes/nodeApi.repository";
+import { createNodeApi, deleteNodeApi, getNodeApi, updateNodeApi } from "../../repository/nodes/nodeApi.repository";
 
 export const createNodeApiService = async (data: NodeFlowInterface) => {
     return await createNodeApi(data);
@@ -12,3 +12,7 @@ export const getNodeApiService = async (nodeId: number, userId: number) => {
 export const deleteNodeApiService = async (nodeId: number, userId: number) => {
     return await deleteNodeApi(nodeId, userId);
 }
+
+export const updateNodeApiService = async (nodeId: number, userId: number, data: Partial<NodeFlowInterface>) => {
+    return await updateNodeApi(nodeId, userId, data);
+}

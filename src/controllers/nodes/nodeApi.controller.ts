@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { responseStatus } from "../../utils/status";
-import { createNodeApiService, deleteNodeApiService, getNodeApiService } from "../../services/nodes/nodeApi.services";
+import { createNodeApiService, deleteNodeApiService, getNodeApiService, updateNodeApiService } from "../../services/nodes/nodeApi.services";
 
 type nodeMethods =
     "GET" |
@@ -56,6 +56,18 @@ export const deleteNodeApiController = async (req: AuthRequest, res: Response, n
         const userId = req.user?.id as number;
         const node = await deleteNodeApiService(nodeId, userId);
         return responseStatus(res, 200, "Node API config deleted successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const updateNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const nodeId = Number(req.params?.nodeId);
+        const userId = req.user?.id as number;
+        const data = req.body;
+        const updated = await updateNodeApiService(nodeId, userId, data);
+        return responseStatus(res, 200, "Node API config updated successfully", updated);
     } catch (error) {
         next(error);
     }
