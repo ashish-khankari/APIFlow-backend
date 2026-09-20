@@ -1,6 +1,6 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import pool from "../../config/database";
-import { CreateNodeSlicesInterface, NodeIdsInterface } from "../../controllers/node.controller";
+import { CreateNodeSlicesInterface, NodeIdsInterface } from "../../controllers/nodes/node.controller";
 
 export const createNodesSlice = async (data: CreateNodeSlicesInterface) => {
     // 1. Verify flow exists and belongs to the authenticated user
@@ -88,9 +88,9 @@ export const deleteNodeById = async (id: number, flowId: number, userId: number)
 }
 
 export const updateNodeById = async (
-    id: number, 
-    flowId: number, 
-    userId: number, 
+    id: number,
+    flowId: number,
+    userId: number,
     data: Partial<CreateNodeSlicesInterface>
 ) => {
     const query = `

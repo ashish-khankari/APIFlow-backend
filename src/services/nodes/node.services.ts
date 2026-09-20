@@ -1,5 +1,5 @@
-import { CreateNodeSlicesInterface, NodeFlowInterface, NodeIdsInterface } from "../../controllers/node.controller"
-import { createNode, deleteNodeFlow, getAllNodeFlow, getNodeFlow } from "../../repository/nodes/node.details.repository";
+import { CreateNodeSlicesInterface, NodeFlowInterface, NodeIdsInterface } from "../../controllers/nodes/node.controller"
+import { createNode, deleteNodeFlow, getAllNodeFlow, getNodeFlow } from "../../repository/nodes/nodeApi.repository";
 import { createNodesSlice, getAllNodeSlice, getNode, deleteNodeById, updateNodeById } from "../../repository/nodes/node.repository";
 
 export const createNodeSliceService = async (data: CreateNodeSlicesInterface) => {
@@ -25,26 +25,10 @@ export const deleteNodeByIdService = async (id: number, flowId: number, userId: 
 }
 
 export const updateNodeByIdService = async (
-    id: number, 
-    flowId: number, 
-    userId: number, 
+    id: number,
+    flowId: number,
+    userId: number,
     data: Partial<CreateNodeSlicesInterface>
 ) => {
     return await updateNodeById(id, flowId, userId, data);
-}
-
-export const createNodeService = async (data: NodeFlowInterface) => {
-    return await createNode(data);
-}
-
-export const getAllNodeFlowService = async (id: number, flowId: number) => {
-    return await getAllNodeFlow(id, flowId);
-}
-
-export const getNodeFlowService = async (id: number, flowId: number) => {
-    return await getNodeFlow(id, flowId);
-}
-
-export const deleteNodeFlowService = async (id: number, flowId: number) => {
-    return await deleteNodeFlow(id, flowId);
 }

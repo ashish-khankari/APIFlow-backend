@@ -1,11 +1,9 @@
 import pool from "../../config/database";
-import { NodeFlowInterface } from "../../controllers/node.controller";
+import { NodeFlowInterface } from "../../controllers/nodes/node.controller";
 
 export const createNode = async (data: NodeFlowInterface) => {
     const query = `
     INSERT INTO node_api (
-        node_title,
-        node_description,
         node_method,
         node_base_url,
         node_end_point,
@@ -14,11 +12,9 @@ export const createNode = async (data: NodeFlowInterface) => {
         request_body,
         flow_id,
         user_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
     const [rows] = await pool.execute(query, [
-        data.node_title,
-        data.node_description,
         data.node_method,
         data.node_base_url,
         data.node_end_point ?? null,
