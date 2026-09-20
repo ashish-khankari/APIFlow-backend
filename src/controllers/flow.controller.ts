@@ -7,11 +7,16 @@ export interface flowInterface {
     flow_name: string,
     flow_description: string,
     user_id: number,
+    token_key: string
 }
 
 export const createFlowController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const data: flowInterface = req.body;
     data.user_id = req.user?.id as number;
+
+    if (!data?.token_key) {
+        return responseStatus(res, 404, "Token key_name is required to rotate to token accross the flow");
+    }
 
     try {
         await createFlowService(data);
