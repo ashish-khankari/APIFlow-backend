@@ -1,4 +1,4 @@
-import { NodeFlowInterface } from "../../controllers/nodes/node.controller";
+import { NodeFlowInterface } from "../../controllers/nodes/nodeApi.controller";
 import { createNodeApi, deleteNodeApi, getAllNodeApi, getNodeApi } from "../../repository/nodes/nodeApi.repository";
 
 export const createNodeApiService = async (data: NodeFlowInterface) => {

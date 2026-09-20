@@ -1,5 +1,4 @@
-import { CreateNodeSlicesInterface, NodeFlowInterface, NodeIdsInterface } from "../../controllers/nodes/node.controller"
-import { createNode, deleteNodeFlow, getAllNodeFlow, getNodeFlow } from "../../repository/nodes/nodeApi.repository";
+import { CreateNodeSlicesInterface, NodeIdsInterface } from "../../controllers/nodes/node.controller"
 import { createNodesSlice, getAllNodeSlice, getNode, deleteNodeById, updateNodeById } from "../../repository/nodes/node.repository";
 
 export const createNodeSliceService = async (data: CreateNodeSlicesInterface) => {
