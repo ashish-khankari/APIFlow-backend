@@ -1,7 +1,7 @@
 import pool from "../../config/database";
 import { NodeFlowInterface } from "../../controllers/nodes/node.controller";
 
-export const createNode = async (data: NodeFlowInterface) => {
+export const createNodeApi = async (data: NodeFlowInterface) => {
     const query = `
     INSERT INTO node_api (
         node_method,
@@ -27,21 +27,21 @@ export const createNode = async (data: NodeFlowInterface) => {
     return rows;
 }
 
-export const getAllNodeFlow = async (id: number, flowId: number) => {
+export const getAllNodeApi = async (id: number, flowId: number) => {
     const query = `
     SELECT * FROM node_api WHERE id = ? AND flow_id = ? ORDER BY id ASC;`;
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
 }
 
-export const getNodeFlow = async (id: number, flowId: number) => {
+export const getNodeApi = async (id: number, flowId: number) => {
     const query = `
     SELECT * FROM node_api WHERE id = ? AND flow_id = ?;`;
     const [rows] = await pool.execute(query, [id, flowId]);
     return rows;
 }
 
-export const deleteNodeFlow = async (id: number, flowId: number) => {
+export const deleteNodeApi = async (id: number, flowId: number) => {
     const query = `
     DELETE FROM node_api WHERE id = ? AND flow_id = ?;`;
     const [rows] = await pool.execute(query, [id, flowId]);

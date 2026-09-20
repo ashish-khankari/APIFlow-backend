@@ -1,18 +1,18 @@
 import { NodeFlowInterface } from "../../controllers/nodes/node.controller";
-import { createNode, deleteNodeFlow, getAllNodeFlow, getNodeFlow } from "../../repository/nodes/nodeApi.repository";
+import { createNodeApi, deleteNodeApi, getAllNodeApi, getNodeApi } from "../../repository/nodes/nodeApi.repository";
 
-export const createNodeService = async (data: NodeFlowInterface) => {
-    return await createNode(data);
+export const createNodeApiService = async (data: NodeFlowInterface) => {
+    return await createNodeApi(data);
 }
 
-export const getAllNodeFlowService = async (id: number, flowId: number) => {
-    return await getAllNodeFlow(id, flowId);
+export const getAllNodeApiService = async (id: number, flowId: number) => {
+    return await getAllNodeApi(id, flowId);
 }
 
-export const getNodeFlowService = async (id: number, flowId: number) => {
-    return await getNodeFlow(id, flowId);
+export const getNodeApiService = async (id: number, flowId: number) => {
+    return await getNodeApi(id, flowId);
 }
 
-export const deleteNodeFlowService = async (id: number, flowId: number) => {
-    return await deleteNodeFlow(id, flowId);
+export const deleteNodeApiService = async (id: number, flowId: number) => {
+    return await deleteNodeApi(id, flowId);
 }
