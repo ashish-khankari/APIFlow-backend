@@ -1,0 +1,62 @@
+CREATE TABLE `node` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `node_title` varchar(40) NOT NULL,
+  `node_description` varchar(80) DEFAULT NULL,
+  `node_order` int NOT NULL,
+  `flow_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `flow_id` (`flow_id`,`node_order`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `node_ibfk_1` FOREIGN KEY (`flow_id`) REFERENCES `flow` (`id`),
+  CONSTRAINT `node_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+)
+
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `company_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+)
+
+CREATE TABLE `flow` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `flow_name` varchar(50) NOT NULL,
+  `flow_description` varchar(100) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `token_key` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `flow_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+)
+
+CREATE TABLE `node_api` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `node_id` int NOT NULL,
+  `flow_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `node_api_method` enum('POST','PUT','DELETE','GET','PATCH') NOT NULL DEFAULT 'GET',
+  `node_api_base_url` varchar(255) NOT NULL,
+  `node_api_end_point` varchar(255) NOT NULL,
+  `node_api_token` text,
+  `node_api_headers` json DEFAULT NULL,
+  `node_api_request_body` json DEFAULT NULL,
+  `node_api_query` json DEFAULT NULL,
+  `node_api_params` json DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `node_id` (`node_id`),
+  KEY `flow_id` (`flow_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `node_api_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `node_api_ibfk_2` FOREIGN KEY (`flow_id`) REFERENCES `flow` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `node_api_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) 
