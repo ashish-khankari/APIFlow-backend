@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { authenticateToken } from "../../middleware/auth.middleware";
-import { createNodeApiController, deleteNodeApiController, getNodeApiController, updateNodeApiController } from "../../controllers/nodes/nodeApi.controller";
+import { createNodeApiController, deleteNodeApiController, getAllNodeApiController, getNodeApiController } from "../../controllers/nodes/nodeApi.controller";
 
 const route = Router();
 
 route.post('/node-api', authenticateToken, createNodeApiController);
-route.get('/node-api/:nodeId', authenticateToken, getNodeApiController);
-route.patch('/node-api/:nodeId', authenticateToken, updateNodeApiController);
-route.delete('/node-api/:nodeId', authenticateToken, deleteNodeApiController);
+route.get('/node-api/:flowId', authenticateToken, getAllNodeApiController);
+route.get('/node-api/:flowId/:id', authenticateToken, getNodeApiController);
+route.delete('/node-api/:flowId/:id', authenticateToken, deleteNodeApiController);
 
 export default route;
