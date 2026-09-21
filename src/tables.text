@@ -60,3 +60,29 @@ CREATE TABLE `node_api` (
   CONSTRAINT `node_api_ibfk_2` FOREIGN KEY (`flow_id`) REFERENCES `flow` (`id`) ON DELETE CASCADE,
   CONSTRAINT `node_api_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) 
+
+CREATE TABLE execution_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    run_id VARCHAR(36) NOT NULL UNIQUE,
+    flow_id INT NOT NULL,
+    user_id INT NOT NULL,
+    status ENUM('completed', 'failed') NOT NULL,
+    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP NULL,
+    FOREIGN KEY (flow_id) REFERENCES flow(id) ON DELETE CASCADE
+);
+
+CREATE TABLE execution_step_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    run_id VARCHAR(36) NOT NULL,
+    node_id INT NOT NULL,
+    node_title VARCHAR(255),
+    node_order INT NOT NULL,
+    status ENUM('success', 'failed') NOT NULL,
+    status_code INT,
+    response_body JSON,
+    duration_ms INT,
+    error_message TEXT,
+    executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (run_id) REFERENCES execution_log(run_id) ON DELETE CASCADE
+);
