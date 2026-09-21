@@ -2,6 +2,7 @@ import pool from "../../config/database";
 import { NodeFlowInterface } from "../../controllers/nodes/nodeApi.controller";
 
 export const createNodeApi = async (data: NodeFlowInterface) => {
+    console.log('data', data.node_api_end_point)
     const query = `
     INSERT INTO node_api (
         node_id,
@@ -9,7 +10,7 @@ export const createNodeApi = async (data: NodeFlowInterface) => {
         user_id,
         node_api_method,
         node_api_base_url,
-        node_api_endpoint,
+        node_api_end_point,
         node_api_token,
         node_api_headers,
         node_api_request_body,
@@ -23,7 +24,7 @@ export const createNodeApi = async (data: NodeFlowInterface) => {
         data.user_id,
         data.node_api_method,
         data.node_api_base_url,
-        data.node_api_endpoint ?? null,
+        data.node_api_end_point ?? null,
         data.node_api_token ?? null,
         data.node_api_headers ? JSON.stringify(data.node_api_headers) : null,
         data.node_api_request_body ? JSON.stringify(data.node_api_request_body) : null,
@@ -62,14 +63,14 @@ export const updateNodeApi = async (nodeId: number, userId: number, data: Partia
     WHERE node_id = ? AND user_id = ?;`;
 
     const [rows]: any = await pool.execute(query, [
-        data.node_api_method        ?? null,
-        data.node_api_base_url      ?? null,
-        data.node_api_endpoint      ?? null,
-        data.node_api_token         ?? null,
-        data.node_api_headers       ? JSON.stringify(data.node_api_headers)       : null,
-        data.node_api_request_body  ? JSON.stringify(data.node_api_request_body)  : null,
-        data.node_api_query         ? JSON.stringify(data.node_api_query)         : null,
-        data.node_api_params        ? JSON.stringify(data.node_api_params)        : null,
+        data.node_api_method ?? null,
+        data.node_api_base_url ?? null,
+        data.node_api_end_point ?? null,
+        data.node_api_token ?? null,
+        data.node_api_headers ? JSON.stringify(data.node_api_headers) : null,
+        data.node_api_request_body ? JSON.stringify(data.node_api_request_body) : null,
+        data.node_api_query ? JSON.stringify(data.node_api_query) : null,
+        data.node_api_params ? JSON.stringify(data.node_api_params) : null,
         nodeId,
         userId,
     ]);

@@ -18,7 +18,7 @@ export interface NodeFlowInterface {
     user_id: number,
     node_api_method: nodeMethods,
     node_api_base_url: string,
-    node_api_endpoint: string,
+    node_api_end_point: string,
     node_api_token: string,
     node_api_headers: Record<string, unknown>,
     node_api_request_body: Record<string, unknown>,

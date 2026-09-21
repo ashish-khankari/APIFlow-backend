@@ -6,7 +6,7 @@ interface JwtPayload {
 }
 
 const jwtSecret = process.env.JWT_SECRET || "task-management-secret";
-const jwtExpiresIn = process.env.JWT_EXPIRES_IN || "1h";
+const jwtExpiresIn = "24h";
 
 export const generateToken = ({ id, email }: JwtPayload): string => {
   return jwt.sign(
