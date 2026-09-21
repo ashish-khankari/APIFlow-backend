@@ -2,7 +2,6 @@ import pool from "../../config/database";
 import { NodeFlowInterface } from "../../controllers/nodes/nodeApi.controller";
 
 export const createNodeApi = async (data: NodeFlowInterface) => {
-    console.log('data', data.node_api_end_point)
     const query = `
     INSERT INTO node_api (
         node_id,
