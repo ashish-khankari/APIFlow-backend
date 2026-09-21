@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { responseStatus } from "../../utils/status";
-import { createNodeApiService, deleteNodeApiService, getNodeApiService, updateNodeApiService } from "../../services/nodes/nodeApi.services";
+import { createNodeApiService, deleteNodeApiService, getAllNodeApiService, getNodeApiService } from "../../services/nodes/nodeApi.services";
 
 type nodeMethods =
     "GET" |
@@ -18,7 +18,7 @@ export interface NodeFlowInterface {
     user_id: number,
     node_api_method: nodeMethods,
     node_api_base_url: string,
-    node_api_end_point: string,
+    node_api_endpoint: string,
     node_api_token: string,
     node_api_headers: Record<string, unknown>,
     node_api_request_body: Record<string, unknown>,
@@ -39,12 +39,23 @@ export const createNodeApiController = async (req: AuthRequest, res: Response, n
     }
 }
 
+export const getAllNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.user?.id);
+        const flowId = Number(req.params?.flowId);
+        const node = await getAllNodeApiService(id, flowId);
+        return responseStatus(res, 200, "Node fetched successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const getNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-        const nodeId = Number(req.params?.nodeId);
-        const userId = req.user?.id as number;
-        const node = await getNodeApiService(nodeId, userId);
-        return responseStatus(res, 200, "Node API config fetched successfully", node);
+        const id = Number(req.params?.id);
+        const flowId = Number(req.params?.flowId);
+        const node = await getNodeApiService(id, req.user?.id as number, flowId);
+        return responseStatus(res, 200, "Node fetched successfully", node);
     } catch (error) {
         next(error);
     }
@@ -52,22 +63,10 @@ export const getNodeApiController = async (req: AuthRequest, res: Response, next
 
 export const deleteNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-        const nodeId = Number(req.params?.nodeId);
-        const userId = req.user?.id as number;
-        const node = await deleteNodeApiService(nodeId, userId);
-        return responseStatus(res, 200, "Node API config deleted successfully", node);
-    } catch (error) {
-        next(error);
-    }
-}
-
-export const updateNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-        const nodeId = Number(req.params?.nodeId);
-        const userId = req.user?.id as number;
-        const data = req.body;
-        const updated = await updateNodeApiService(nodeId, userId, data);
-        return responseStatus(res, 200, "Node API config updated successfully", updated);
+        const id = Number(req.params?.id);
+        const flowId = Number(req.params?.flowId);
+        const node = await deleteNodeApiService(id, flowId);
+        return responseStatus(res, 200, "Node deleted successfully", node);
     } catch (error) {
         next(error);
     }
