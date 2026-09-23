@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { responseStatus } from "../../utils/status";
-import { createNodeApiService, deleteNodeApiService, getAllNodeApiService, getNodeApiService } from "../../services/nodes/nodeApi.services";
+import { createNodeApiService, deleteNodeApiService, getAllNodeApiService, getNodeApiService, updateNodeApiService } from "../../services/nodes/nodeApi.services";
 
 type nodeMethods =
     "GET" |
@@ -18,7 +18,7 @@ export interface NodeFlowInterface {
     user_id: number,
     node_api_method: nodeMethods,
     node_api_base_url: string,
-    node_api_endpoint: string,
+    node_api_end_point: string,
     node_api_token: string,
     node_api_headers: Record<string, unknown>,
     node_api_request_body: Record<string, unknown>,
@@ -56,6 +56,21 @@ export const getNodeApiController = async (req: AuthRequest, res: Response, next
         const flowId = Number(req.params?.flowId);
         const node = await getNodeApiService(id, req.user?.id as number, flowId);
         return responseStatus(res, 200, "Node fetched successfully", node);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const updateNodeApiController = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params?.id);
+        const flowId = Number(req.params?.flowId);
+        const data = req.body;
+        if(!data || req.body === null || Object.keys(data).length === 0) {
+            return responseStatus(res, 404, "Invalid data");
+        }
+        const node = await updateNodeApiService(id, flowId, data);
+        return responseStatus(res, 200, "Node updated successfully", node);
     } catch (error) {
         next(error);
     }

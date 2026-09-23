@@ -70,7 +70,6 @@ export const executeFlow = async (flowId: number, userId: number) => {
     VALUES (?, ?, ?, ?, NOW());`;
     await pool.execute(createRun, [run_id, flowId, userId, overallStatus]);
 
-    // Save each step result to execution_step_log
     if (result.completedSteps.length > 0) {
         const insertStep = `
         INSERT INTO execution_step_log
