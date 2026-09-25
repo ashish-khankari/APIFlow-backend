@@ -37,7 +37,7 @@ export const executeFlow = async (flowId: number, userId: number) => {
         node.node_order,
         node.user_id,
         node.flow_id,
-        node_api.id,
+        node_api.id AS node_api_id,
         node_api.node_api_method,
         node_api.node_api_base_url,
         node_api.node_api_end_point,

@@ -77,10 +77,10 @@ export const handleExecution = async (arr: NodeExecutionInterface[], token: any)
                 statusCode: error?.response?.status ?? 0,
                 responseBody: error?.response?.data ?? null,
                 durationMs: Date.now() - start,
-                error: error?.message,
+                error: error?.message || 'Request failed',
             });
             return { success: false, completedSteps: results, failedAt: node.node_title };
         }
     }
     return { success: true, completedSteps: results };
-}
+};
