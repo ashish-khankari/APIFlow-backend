@@ -47,7 +47,7 @@ export const handleExecution = async (arr: NodeExecutionInterface[], token: any)
                 url: `${node.node_api_base_url}${node?.node_api_end_point}?${node?.node_api_query ? new URLSearchParams(node.node_api_query as any).toString() : ''}`,
                 headers: {
                     ...node?.node_api_headers,
-                    ...(getToken ? { Authorization: `${getToken}` } : {}),
+                    ...(getToken ? { Authorization: `Bearer ${getToken}` } : {}),
                 },
                 method: node?.node_api_method,
                 params: node?.node_api_params,
