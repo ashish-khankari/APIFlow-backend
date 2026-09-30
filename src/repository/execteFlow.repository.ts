@@ -28,7 +28,7 @@ export interface NodeExecutionInterface {
     node_api_params: Record<string, unknown>
 }
 
-export const executeFlow = async (flowId: number, userId: number) => {
+export const executeFlow = async (flowId: number, userId: number, runId?: string) => {
     const getApisFlow = `
     SELECT
         node.id,
@@ -62,7 +62,7 @@ export const executeFlow = async (flowId: number, userId: number) => {
 
     const overallStatus = result.success ? 'completed' : 'failed'
 
-    const run_id = crypto.randomUUID();
+    const run_id = runId || crypto.randomUUID();
 
     const createRun = `
     INSERT INTO execution_log
