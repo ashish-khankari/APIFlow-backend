@@ -1,10 +1,11 @@
 import { Redis, RedisOptions } from "ioredis";
 
 export const redisConnectionOptions: RedisOptions = {
-    username: "apiflow",
-    password: "Ashish@123",
-    port: 6379,
-    host: 'localhost',
+    // Auth is optional — only used when env vars are set (e.g. production)
+    ...(process.env.REDIS_USERNAME && { username: process.env.REDIS_USERNAME }),
+    ...(process.env.REDIS_PASSWORD && { password: process.env.REDIS_PASSWORD }),
+    port: Number(process.env.REDIS_PORT) || 6379,
+    host: process.env.REDIS_HOST || 'localhost',
     db: 0,
     maxRetriesPerRequest: null, // Required by BullMQ
 };
@@ -15,6 +16,6 @@ redis.on("connect", () => {
     console.log("Redis is connected ⚡⚡⚡");
 });
 
-redis.on("error", () => {
-    console.log("Redis connection failed ❌❌❌");
+redis.on("error", (err) => {
+    console.log("Redis connection failed ❌❌❌", err.message);
 });
