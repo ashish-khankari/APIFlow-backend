@@ -1,7 +1,7 @@
 import pool from "../config/database"
 import { handleExecution } from "../utils/executionEngine";
 import { RowDataPacket } from "mysql2";
-import crypto from 'crypto';
+
 
 type nodeMethods =
     "GET" |
@@ -28,7 +28,7 @@ export interface NodeExecutionInterface {
     node_api_params: Record<string, unknown>
 }
 
-export const executeFlow = async (flowId: number, userId: number, runId?: string) => {
+export const executeFlow = async (flowId: number, userId: number, runId: string) => {
     const getApisFlow = `
     SELECT
         node.id,
@@ -62,7 +62,7 @@ export const executeFlow = async (flowId: number, userId: number, runId?: string
 
     const overallStatus = result.success ? 'completed' : 'failed'
 
-    const run_id = runId || crypto.randomUUID();
+    const run_id = runId;
 
     const createRun = `
     INSERT INTO execution_log
