@@ -6,7 +6,7 @@ export const createFlow = async (data: flowInterface) => {
     const [rows] = await pool.execute(query, [
         data.user_id,
         data.flow_name,
-        data.flow_description,
+        data.flow_description || "",
         data.token_key
     ]);
 
@@ -20,10 +20,31 @@ export const getAllFlow = async (id: number) => {
 }
 
 export const deleteFlow = async (user_id: number, id: string) => {
-    const query = `DELETE FROM flow WHERE user_id = ? AND id = ?;`;
-    const [rows] = await pool.execute(query, [user_id, id]);
-    return rows;
-}
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        // 1. Delete node_api rows associated with this flow
+        await connection.execute(`DELETE FROM node_api WHERE flow_id = ? AND user_id = ?;`, [id, user_id]);
+
+        // 2. Delete node rows associated with this flow
+        await connection.execute(`DELETE FROM node WHERE flow_id = ? AND user_id = ?;`, [id, user_id]);
+
+        // 3. Delete execution_log rows associated with this flow
+        await connection.execute(`DELETE FROM execution_log WHERE flow_id = ? AND user_id = ?;`, [id, user_id]);
+
+        // 4. Finally delete the flow
+        const [rows] = await connection.execute(`DELETE FROM flow WHERE user_id = ? AND id = ?;`, [user_id, id]);
+
+        await connection.commit();
+        return rows;
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+    } finally {
+        connection.release();
+    }
+};
 
 export const fetchSingleFlow = async (user_id: number, id: string) => {
     const query = `SELECT * FROM flow WHERE user_id = ? AND id = ?;`;
@@ -40,6 +61,6 @@ export const updateFlow = async (data: flowInterface, id: string) => {
             flow_description=COALESCE(?, flow_description)
         WHERE 
             id=?`;
-    const [rows] = await pool.execute(query, [data.flow_name, data.flow_description, id]);
+    const [rows] = await pool.execute(query, [data.flow_name ?? null, data.flow_description ?? null, id]);
     return rows;
 }

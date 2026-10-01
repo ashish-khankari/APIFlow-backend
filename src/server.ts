@@ -1,6 +1,7 @@
 import "dotenv/config";
 import app from "./app";
 import { connectDatabase } from "./config/database";
+import "./workers/flow.worker";
 
 const PORT = process.env.PORT || 8080;
 

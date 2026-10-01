@@ -12,8 +12,8 @@ export const executeFlowController = async (req: AuthRequest, res: Response, nex
             return responseStatus(res, 400, 'Flow Id is required');
         }
 
-        const result = await executeFlowService(flowId, userId)
-        return responseStatus(res, 200, 'Success', result);
+        const result = await executeFlowService(flowId, userId);
+        return responseStatus(res, 202, 'Flow execution queued', result);
     } catch (error) {
         next(error);
     }

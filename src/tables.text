@@ -9,7 +9,7 @@ CREATE TABLE `node` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `flow_id` (`flow_id`,`node_order`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `node_ibfk_1` FOREIGN KEY (`flow_id`) REFERENCES `flow` (`id`),
+  CONSTRAINT `node_ibfk_1` FOREIGN KEY (`flow_id`) REFERENCES `flow` (`id`) ON DELETE CASCADE,
   CONSTRAINT `node_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 )
 
