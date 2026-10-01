@@ -14,14 +14,31 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  process.env.CLIENT_URL,
+].filter(Boolean) as string[];
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Allow during development or adjust as needed
+      }
+    },
     credentials: true,
   })
 );
 
 app.use(express.json());
+
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({ status: "ok", message: "API Flow Backend is running 🚀" });
+});
 
 app.use("/", userRoutes);
 app.use("/", flowRoutes);
