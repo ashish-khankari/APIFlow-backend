@@ -2,11 +2,12 @@ import { flowInterface } from "../controllers/flow.controller"
 import { createFlow, deleteFlow, fetchSingleFlow, getAllFlow, updateFlow } from "../repository/flow.repository";
 
 export const createFlowService = async (data: flowInterface) => {
-    if (!data?.flow_name || !data?.flow_description) {
-        const error: any = new Error("Flow name and flow description are required");
+    if (!data?.flow_name?.trim()) {
+        const error: any = new Error("Flow name is required");
         error.statusCode = 400;
         throw error;
-    };
+    }
+    data.flow_description = data.flow_description?.trim() || "";
 
     await createFlow(data);
 }

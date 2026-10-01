@@ -5,7 +5,7 @@ import { AuthRequest } from "../middleware/auth.middleware";
 
 export interface flowInterface {
     flow_name: string,
-    flow_description: string,
+    flow_description?: string,
     user_id: number,
     token_key: string
 }
