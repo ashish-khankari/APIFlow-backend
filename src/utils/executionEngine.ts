@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { NodeExecutionInterface } from "../repository/execteFlow.repository";
+import { redis } from '../redis/redis.connect';
 
 interface StepResult {
     node_id: number;
@@ -41,6 +42,26 @@ export const handleExecution = async (arr: NodeExecutionInterface[], token: any)
 
     let getToken = ''
     for (const node of arr) {
+        const getCachedData = await redis.get(`cache-key${node.id}`)
+        if (getCachedData && node.node_api_method === 'GET') {
+            const parsedBody = JSON.parse(getCachedData);
+            // Extract token if needed by downstream nodes
+            const result = findKey(parsedBody, token?.[0]?.token_key);
+            if (result !== null) {
+                getToken = result;
+            }
+
+            results.push({
+                node_id: node.id,
+                node_title: node.node_title,
+                node_order: node.node_order,
+                status: 'success',
+                statusCode: 200,
+                responseBody: JSON.parse(getCachedData),
+                durationMs: 0,
+            })
+            continue;
+        }
         const start = Date.now();
         try {
             const handleAxiosApis = await axios({
@@ -68,6 +89,15 @@ export const handleExecution = async (arr: NodeExecutionInterface[], token: any)
                 responseBody: handleAxiosApis.data,
                 durationMs: Date.now() - start,
             })
+
+            if (node.node_api_method === 'GET') {
+                try {
+                    await redis.set(`cache-key${node.id}`, JSON.stringify(handleAxiosApis.data), 'EX', 300);
+                } catch (cacheErr) {
+                    console.warn(`Redis set error for node ${node.id}:`, cacheErr);
+                }
+            }
+
         } catch (error: any) {
             results.push({
                 node_id: node.id,
